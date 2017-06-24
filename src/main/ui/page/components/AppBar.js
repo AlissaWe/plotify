@@ -7,6 +7,18 @@ import ContentRedo from "material-ui/svg-icons/content/redo";
 import ContentUndo from "material-ui/svg-icons/content/undo";
 import ActionMenu from "./ActionMenu";
 import { white } from "material-ui/styles/colors";
+import * as selectors from "../selectors";
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => {
+  return {
+    title: selectors.getCurrentPageTitle(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
 
 const styles = {
   appBar: {
@@ -20,7 +32,7 @@ const styles = {
   },
 };
 
-export default class PlotifyAppBar extends Component {
+class PlotifyAppBarComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,3 +80,10 @@ export default class PlotifyAppBar extends Component {
     );
   }
 }
+
+const PlotifyAppBar = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PlotifyAppBarComponent);
+
+export default PlotifyAppBar;

@@ -35,6 +35,7 @@ const styles = {
 const mapStateToProps = (state) => {
   return {
     currentPageId: s.getCurrentPageId(state),
+    hasNavigation: s.hasCurrentPageNavigation(state),
   };
 };
 
@@ -56,16 +57,19 @@ class NavigationComponent extends Component {
 
     return (
       <div style={styles.menu}>
-        <MenuItem
-          disabled={ this.props.disabled }
-          style={ isCharActive ? styles.active : styles.menuItem }
-          leftIcon=
-            {
-              <SocialPerson
-                color={ isCharActive ? styles.iconActive.color : "" }
-              />
-            }
-          onTouchTap={() => this.props.handleSetPage(PAGES.CHARACTERS.id)}/>
+        {
+          this.props.hasNavigation &&
+          <MenuItem
+            disabled={ this.props.disabled }
+            style={ isCharActive ? styles.active : styles.menuItem }
+            leftIcon=
+              {
+                <SocialPerson
+                  color={ isCharActive ? styles.iconActive.color : "" }
+                />
+              }
+            onTouchTap={() => this.props.handleSetPage(PAGES.CHARACTERS.id)}/>
+        }
       </div>
     );
   }
