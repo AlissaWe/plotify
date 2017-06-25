@@ -1,26 +1,6 @@
 import React, { Component } from "react";
 import PlotifyAppBar from "./AppBar";
-import Navigation from "./Navigation";
-import * as selectors from "../selectors";
-import { PAGES } from "../constants";
-import CharacterPage from "../../characters/components/CharacterPage";
-import WelcomePage from "../../welcome/components/WelcomePage";
-import { palette, spacing } from "../../themes/PlotifyMainTheme";
-import Snackbar from "../../snackbar/components/Snackbar";
-import AboutDialog from "../../about/components/AboutDialog";
-import { white } from "material-ui/styles/colors";
-
-const mapStateToProps = (state) => {
-  return {
-    currentPageId: selectors.getCurrentPageId(state),
-    hasNavigation: selectors.hasCurrentPageNavigation(state),
-    title: selectors.getCurrentPageTitle(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
+import { palette, spacing } from "./themes/PlotifyMainTheme";
 
 const styles = {
   app: {
@@ -48,45 +28,12 @@ const styles = {
   },
 };
 
-class AppComponent extends Component {
+export default class AppComponent extends Component {
   render() {
-    let page;
-    switch (this.props.currentPageId) {
-      case
-      PAGES.CHARACTERS.id :
-        page = <CharacterPage />;
-        break;
-      default:
-        page = <WelcomePage />;
-        break;
-    }
     return (
       <div id="PlotifyApp" style={styles.app}>
-
-        <PlotifyAppBar title={this.props.title}/>
-
-        <div style={styles.pageWrapper}>
-          { this.props.hasNavigation &&
-          <div style={styles.navigationWrapper}>
-            <Navigation />
-          </div>
-          }
-          <div style={styles.pageContentWrapper}>
-            {page}
-          </div>
-        </div>
-
-        <Snackbar />
-        <AboutDialog />
-
+        <PlotifyAppBar/>
       </div>
     );
   }
 }
-
-const App = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AppComponent);
-
-export default App;

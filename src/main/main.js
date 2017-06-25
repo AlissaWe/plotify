@@ -69,7 +69,7 @@ function createWindow() {
     });
 
     mainWindow.loadURL(url.format({
-      pathname: path.join(__dirname, "./ui/index.html"),
+      pathname: path.join(__dirname, "./ui-rxr/index.html"),
       protocol: "file:",
       slashes: true
     }));

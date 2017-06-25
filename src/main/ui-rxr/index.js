@@ -1,31 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import injectTapEventPlugin from "react-tap-event-plugin";
-injectTapEventPlugin();
-
 import { Provider } from "rxr-react";
-import { createState, createLoggerStream, startLogging, messageStreamsMonitor$ } from "rxr";
-
-// import chainedActionsMiddleware from "./chained-actions";
-
+import { createLoggerStream, createState, messageStreamsMonitor$, startLogging } from "rxr";
 import App from "./App";
 import { getMuiTheme, MuiThemeProvider } from "material-ui/styles/index";
 import PlotifyMainTheme from "./themes/PlotifyMainTheme";
-
+import initialState from "./initialState";
 
 import reducer$ from "./reducers";
+injectTapEventPlugin();
 
-// Component-Based States?
-const initialState = {
-  title: "Plotify",
-  characters: {
-    list: [],
-    ts: 0,
-    status: undefined
-  },
-  filter: "",
-  selectedCharacter: "",
-};
+// import chainedActionsMiddleware from "./chained-actions";
 
 const state$ = createState(reducer$, initialState);
 
@@ -34,11 +20,12 @@ startLogging(loggerStream$);
 
 window.onload = () => {
   ReactDOM.render(
-    <Provider state$={state$}>
-      <MuiThemeProvider muiTheme={getMuiTheme(PlotifyMainTheme)}>
+    <MuiThemeProvider muiTheme={getMuiTheme(PlotifyMainTheme)}>
+      <Provider state$={state$}>
         <App />
-      </MuiThemeProvider>
-    </Provider>,
+      </Provider>
+    </MuiThemeProvider>,
     document.getElementById("root")
-  );
+  )
+  ;
 };

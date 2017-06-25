@@ -1,20 +1,20 @@
 import { combineReducers } from "rxr";
 import actionStreams from "./actions";
-import { sendToModel } from "../shared/commons/ipc";
-import * as channel from "../shared/characters/ipc-channels";
+import { sendToModel } from "../../../shared/commons/ipc";
+import * as channel from "../../../shared/characters/ipc-channels";
+import Rx from "rxjs";
 
 const IS_LOADING = "IS_LOADING";
 
-const charactersDataLoadingReducer$ =
-  actionStreams.charactersDataLoading$
-    .map((ts) => state => ({
-      ...state,
-      characters: {
-        ...state.characters,
-        status: IS_LOADING,
-        ts
-      }
-    }));
+const charactersDataLoadingReducer$ = actionStreams.charactersDataLoading$
+  .map((ts) => state => ({
+    ...state,
+    characters: {
+      ...state.characters,
+      status: IS_LOADING,
+      ts
+    }
+  }));
 
 const setFilterReducer$ = actionStreams.setFilter$
   .map((val = "") => state => ({
@@ -27,14 +27,28 @@ const selectCharacterReducer$ = actionStreams.selectCharacter$
     ...state, selectedCharacter: id.toString()
   }));
 
-const receivedCharacterData$ = actionStreams.receivedCharacterData$
+const receivedCharactersData$ = actionStreams.receivedCharactersData$
   .map(({ data, error, ts }) => state => {
     if (error) {
       const err = typeof error === "object" ? error.message : error;
-      return { ...state, characters: { ...state.characters, status: err, ts } };
+      return {
+        ...state,
+        characters: {
+          ...state.characters,
+          status: err,
+          ts
+        }
+      };
     }
     if (Array.isArray(data)) {
-      return { ...state, characters: { list: data, status: undefined, ts } };
+      return {
+        ...state,
+        characters: {
+          list: data,
+          status: undefined,
+          ts
+        }
+      };
     }
     return state;
   });
@@ -45,7 +59,7 @@ const fetchCharacters$ = actionStreams.fetchCharacters$
     // notify about loading
     actionStreams.charactersDataLoading$.next(ts);
     const params = { deleted: false, filter: "" };
-    return Observable.fromPromise(sendToModel(channel.FIND_CHARACTERS, params));
+    return Rx.Observable.fromPromise(sendToModel(channel.FIND_CHARACTERS, params));
   })
   .map(val => {
     const ts = Date.now();
@@ -60,7 +74,7 @@ const reducer$ = combineReducers([
   charactersDataLoadingReducer$,
   setFilterReducer$,
   selectCharacterReducer$,
-  receivedCharacterData$,
+  receivedCharactersData$,
   fetchCharacters$
 ]);
 
