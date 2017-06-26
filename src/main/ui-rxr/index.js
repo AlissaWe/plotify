@@ -8,9 +8,10 @@ import { getMuiTheme, MuiThemeProvider } from "material-ui/styles/index";
 import PlotifyMainTheme from "./themes/PlotifyMainTheme";
 import initialState from "./initialState";
 
-import reducer$ from "./reducers";
+import reducer$ from "./rootReducer";
 injectTapEventPlugin();
 
+// todo routing
 // import chainedActionsMiddleware from "./chained-actions";
 
 const state$ = createState(reducer$, initialState);

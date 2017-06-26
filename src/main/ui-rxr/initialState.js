@@ -1,5 +1,12 @@
+import { PAGES } from "./page/constants";
+
 const initialState = {
   title: "Plotify",
+  page: {
+    id: PAGES.WELCOME.id,
+    title: PAGES.WELCOME.title,
+    navigation: PAGES.WELCOME.navigation
+  },
   story: {
     loading: false,
     loadingFailed: false,
@@ -9,15 +16,19 @@ const initialState = {
     creationFailed: false,
     error: null,
     open: false,
-    file: null
+    file: null,
+    ts: 0,
   },
   characters: {
-    list: [],
-    ts: 0,
-    status: undefined
+    list: {
+      loading: false,
+      error: null,
+      filter: "",
+      characters: {},
+      order: [],
+      selected: null
+    }
   },
-  filter: "",
-  selectedCharacter: "",
 };
 
 export default initialState;

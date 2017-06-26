@@ -1,11 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { palette } from "../../themes/PlotifyMainTheme";
 import SocialPerson from "material-ui/svg-icons/social/person";
 import { PAGES } from "../constants";
 import * as s from "../selectors";
-import { setPage } from "../actions";
+import actions from "../actions";
 import MenuItem from "material-ui/MenuItem";
-import { connect } from "react-redux";
+import { connectWithState } from "rxr-react";
+// TODO use react-proptypes
+// import PropTypes from "react-proptypes";
 
 const styles = {
   menu: {
@@ -31,19 +33,6 @@ const styles = {
   }
 };
 
-
-const mapStateToProps = (state) => {
-  return {
-    currentPageId: s.getCurrentPageId(state),
-    hasNavigation: s.hasCurrentPageNavigation(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    handleSetPage: (id) => dispatch(setPage(id))
-  };
-};
 
 class NavigationComponent extends Component {
   constructor(props) {
@@ -75,9 +64,18 @@ class NavigationComponent extends Component {
   }
 }
 
-const Navigation = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NavigationComponent);
+NavigationComponent.propTypes = {
+  currentPageId: PropTypes.string.isRequired,
+  hasNavigation: PropTypes.bool.isRequired,
+  handleSetPage: PropTypes.func.isRequired
+};
+
+const selector = (state) => ({
+  currentPageId: s.getCurrentPageId(state),
+  hasNavigation: s.hasCurrentPageNavigation(state),
+  handleSetPage: actions.setPage,
+});
+
+const Navigation = connectWithState(selector)(NavigationComponent);
 
 export default Navigation;

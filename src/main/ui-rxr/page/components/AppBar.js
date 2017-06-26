@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import AppBar from "material-ui/AppBar";
-import { palette } from "./themes/PlotifyMainTheme";
+import { palette } from "../../themes/PlotifyMainTheme";
 import { Toolbar, ToolbarGroup } from "material-ui/Toolbar";
 import IconButton from "material-ui/IconButton";
 import ContentRedo from "material-ui/svg-icons/content/redo";
@@ -8,6 +8,9 @@ import ContentUndo from "material-ui/svg-icons/content/undo";
 import ActionMenu from "./ActionMenu";
 import { white } from "material-ui/styles/colors";
 import { connectWithState } from "rxr-react";
+import page from "../";
+// TODO use react-proptypes
+// import PropTypes from "react-proptypes";
 
 const styles = {
   appBar: {
@@ -70,8 +73,12 @@ class PlotifyAppBarComponent extends Component {
   }
 }
 
+AppBar.propTypes = {
+  title: PropTypes.string.isRequired,
+};
+
 const selector = (state) => ({
-  title: state.title
+  title: page.selectors.getCurrentPageTitle(state)
 });
 
 const PlotifyAppBar = connectWithState(selector)(PlotifyAppBarComponent);

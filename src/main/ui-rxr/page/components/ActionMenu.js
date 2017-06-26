@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropTypes } from "react";
 import Popover from "material-ui/Popover";
 import Menu from "material-ui/Menu";
 import MenuItem from "material-ui/MenuItem";
@@ -7,32 +7,10 @@ import ActionInfo from "material-ui/svg-icons/action/info";
 import FolderOpen from "material-ui/svg-icons/file/folder-open";
 import FileFolder from "material-ui/svg-icons/file/folder";
 import AvNewReleases from "material-ui/svg-icons/av/new-releases";
-import actionStreams from "./reducers/stories/actions";
 import { connectWithState } from "rxr-react";
-import PropTypes from "react-proptypes";
-
-// const mapStateToProps = (state) => {
-//   return {
-//     noStoryOpen: stories.selectors.isStoryOpen(state)
-//   };
-// };
-//
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     onCreateStory: () => {
-//       dispatch(stories.actions.createStory());
-//     },
-//     onOpenStory: () => {
-//       dispatch(stories.actions.openStory());
-//     },
-//     onOpenStoryFileLocation: () => {
-//       dispatch(stories.actions.openStoryFileLocation());
-//     },
-//     onOpenAboutDialog: () => {
-//       dispatch(about.actions.showAboutDialog());
-//     }
-//   };
-// };
+// TODO switch to react-proptypes when autocomplete works
+// import PropTypes from "react-proptypes";
+import story from "../../story";
 
 class ActionMenuComponent extends React.Component {
   constructor(props) {
@@ -45,7 +23,7 @@ class ActionMenuComponent extends React.Component {
 
   handleCreateStory() {
     // this.props.onRequestClose();
-    // this.props.onCreateStory();
+    // this.props.createStory();
   }
 
   handleOpenStory() {
@@ -55,12 +33,12 @@ class ActionMenuComponent extends React.Component {
 
   handleOpenStoryFileLocation() {
     // this.props.onRequestClose();
-    // this.props.onOpenStoryFileLocation();
+    // this.props.oopenStoryFileLocation();
   }
 
   handleOpenAboutDialog() {
     // this.props.onRequestClose();
-    // this.props.onOpenAboutDialog();
+    // this.props.showAboutDialog();
   }
 
   render() {
@@ -87,7 +65,7 @@ class ActionMenuComponent extends React.Component {
             primaryText="Speicherort öffnen"
             onTouchTap={this.handleOpenStoryFileLocation}
             leftIcon={<FileFolder/>}
-            disabled={!this.props.storyOpen}
+            disabled={!this.props.isStoryOpen}
           />
           <Divider/>
           <MenuItem
@@ -102,11 +80,15 @@ class ActionMenuComponent extends React.Component {
 
 ActionMenuComponent.propTypes = {
   openStoryDialog: PropTypes.func.isRequired,
+  isStoryOpen: PropTypes.bool.isRequired,
 };
 
 const selector = (state) => ({
-  storyOpen: state.story.open,
-  openStoryDialog: actionStreams.openStoryDialog,
+  isStoryOpen: story.selectors.isStoryOpen(state),
+  // createStory: story.actions.createStory,
+  // openStoryFileLocation: story.actions.openStoryFileLocation,
+  // showAboutDialog: story.actions.showAboutDialog,
+  openStoryDialog: story.actions.openStoryDialog,
 });
 
 const ActionMenu = connectWithState(selector)(ActionMenuComponent);

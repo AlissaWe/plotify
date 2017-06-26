@@ -9,7 +9,7 @@ node_modules/
 .~lock.*
 
 # Log files
-*.log
+*.log*
 
 # IntelliJ IDEA
 .idea/

@@ -5,26 +5,51 @@ import * as channel from "../../../shared/characters/ipc-channels";
 import Rx from "rxjs";
 
 const IS_LOADING = "IS_LOADING";
-
+/*
+ list: {
+ loading: false,
+ error: null,
+ filter: "",
+ characters: {},
+ order: [],
+ selected: null
+ }
+ */
 const charactersDataLoadingReducer$ = actionStreams.charactersDataLoading$
   .map((ts) => state => ({
     ...state,
     characters: {
       ...state.characters,
-      status: IS_LOADING,
-      ts
+      list: {
+        ...state.characters.list,
+        loading: true,
+        ts
+      }
     }
   }));
 
 const setFilterReducer$ = actionStreams.setFilter$
   .map((val = "") => state => ({
     ...state,
-    filter: val
+    characters: {
+      ...state.characters,
+      list: {
+        ...state.characters.list,
+        filter: val
+      }
+    }
   }));
 
 const selectCharacterReducer$ = actionStreams.selectCharacter$
   .map((id = "") => state => ({
-    ...state, selectedCharacter: id.toString()
+    ...state,
+    characters: {
+      ...state.characters,
+      list: {
+        ...state.characters.list,
+        selected: id.toString()
+      }
+    }
   }));
 
 const receivedCharactersData$ = actionStreams.receivedCharactersData$
@@ -35,23 +60,35 @@ const receivedCharactersData$ = actionStreams.receivedCharactersData$
         ...state,
         characters: {
           ...state.characters,
-          status: err,
-          ts
+          list: {
+            ...state.characters.list,
+            error: err,
+            loading: false
+          }
         }
       };
     }
-    if (Array.isArray(data)) {
+    if (typeof data === "object") {
       return {
         ...state,
         characters: {
-          list: data,
-          status: undefined,
-          ts
+          ...state.characters,
+          list: {
+            ...state.characters.list,
+            characters: data.reduce(charactersToMap, {}),
+            order: data.map(c => c.id)
+          }
         }
       };
     }
     return state;
   });
+
+
+function charactersToMap(characters, character) {
+  characters[character.id] = character;
+  return characters;
+}
 
 const fetchCharacters$ = actionStreams.fetchCharacters$
   .flatMap(() => {

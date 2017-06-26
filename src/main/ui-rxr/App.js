@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import PlotifyAppBar from "./AppBar";
+import PlotifyAppBar from "./page/components/AppBar";
 import { palette, spacing } from "./themes/PlotifyMainTheme";
+import PageContainer from "./page/components/PageContainer";
+import Navigation from "./page/components/Navigation";
 
 const styles = {
   app: {
@@ -33,6 +35,14 @@ export default class AppComponent extends Component {
     return (
       <div id="PlotifyApp" style={styles.app}>
         <PlotifyAppBar/>
+        <div style={styles.navigationWrapper}>
+          <Navigation />
+        </div>
+        <div style={styles.pageWrapper}>
+          <div style={styles.pageContentWrapper}>
+            <PageContainer/>
+          </div>
+        </div>
       </div>
     );
   }
