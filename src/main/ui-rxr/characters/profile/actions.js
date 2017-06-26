@@ -4,7 +4,9 @@ import isDev from "electron-is-dev";
 const monitor$ = isDev ? messageStreamsMonitor$ : undefined;
 
 const actionStreams = createMessageStreams([
-  "handleSetPage",
+  "profileLoading",
+  "fetchProfile",
+  "receivedProfile",
 ], { messageStreamsMonitor$: monitor$ });
 
 export default actionStreams;

@@ -1,5 +1,6 @@
 import { combineReducers } from "rxr";
 import list from "./list";
+import profile from "./profile";
 
 import page from "../page";
 import actionStreams from "./actions";
@@ -17,6 +18,7 @@ const handleSetPageReducer$ = actionStreams.handleSetPage$
 const reducer$ = combineReducers([
   handleSetPageReducer$,
   list.reducer,
+  profile.reducer,
 ]);
 
 export default reducer$;

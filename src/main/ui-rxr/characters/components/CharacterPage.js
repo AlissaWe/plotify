@@ -10,6 +10,7 @@ import { spacing } from "../../themes/PlotifyMainTheme";
 
 import CharacterList from "../list/components/CharacterList";
 import { connectWithState } from "rxr-react";
+import CharacterProfile from "../profile/components/CharacterProfile";
 // import CharacterProfile from "../profile/components/CharacterProfile";
 
 // import creation from "../creation";
@@ -75,6 +76,7 @@ class CharacterPageComponent extends Component {
         </Paper>
 
         <div style={styles.profile}>
+          <CharacterProfile/>
         </div>
       </div>
     );

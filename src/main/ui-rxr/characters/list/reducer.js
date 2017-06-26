@@ -1,20 +1,11 @@
 import { combineReducers } from "rxr";
 import actionStreams from "./actions";
+import * as selectors from "./selectors";
 import { sendToModel } from "../../../shared/commons/ipc";
 import * as channel from "../../../shared/characters/ipc-channels";
 import Rx from "rxjs";
+import profile from "../profile";
 
-const IS_LOADING = "IS_LOADING";
-/*
- list: {
- loading: false,
- error: null,
- filter: "",
- characters: {},
- order: [],
- selected: null
- }
- */
 const charactersDataLoadingReducer$ = actionStreams.charactersDataLoading$
   .map((ts) => state => ({
     ...state,
@@ -41,16 +32,19 @@ const setFilterReducer$ = actionStreams.setFilter$
   }));
 
 const selectCharacterReducer$ = actionStreams.selectCharacter$
-  .map((id = "") => state => ({
-    ...state,
-    characters: {
-      ...state.characters,
-      list: {
-        ...state.characters.list,
-        selected: id.toString()
+  .map((id = "") => state => {
+    profile.actions.fetchProfile$.next(id);
+    return {
+      ...state,
+      characters: {
+        ...state.characters,
+        list: {
+          ...state.characters.list,
+          selected: id.toString()
+        }
       }
     }
-  }));
+  });
 
 const receivedCharactersData$ = actionStreams.receivedCharactersData$
   .map(({ data, error, ts }) => state => {
@@ -76,6 +70,7 @@ const receivedCharactersData$ = actionStreams.receivedCharactersData$
           list: {
             ...state.characters.list,
             characters: data.reduce(charactersToMap, {}),
+            loading: false,
             order: data.map(c => c.id)
           }
         }
@@ -91,11 +86,14 @@ function charactersToMap(characters, character) {
 }
 
 const fetchCharacters$ = actionStreams.fetchCharacters$
-  .flatMap(() => {
+  .do(() => state => {
+    return selectors.getListFilter(state);
+  })
+  .flatMap((filter) => {
     const ts = Date.now();
     // notify about loading
     actionStreams.charactersDataLoading$.next(ts);
-    const params = { deleted: false, filter: "" };
+    const params = { deleted: false, filter };
     return Rx.Observable.fromPromise(sendToModel(channel.FIND_CHARACTERS, params));
   })
   .map(val => {

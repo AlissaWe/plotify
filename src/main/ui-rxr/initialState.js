@@ -27,6 +27,20 @@ const initialState = {
       characters: {},
       order: [],
       selected: null
+    },
+    profile: {
+      characterId: null,
+      savedName: null,
+      changedName: null,
+      deleted: null,
+      loading: false,
+      loadingFailed: false,
+      saving: false,
+      savingFailed: false,
+      error: null,
+      groups: {},
+      groupsOrder: [],
+      entries: {}
     }
   },
 };

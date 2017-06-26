@@ -6,7 +6,7 @@ import { PAGES } from "./constants";
 const setPageReducer$ = actionStreams.setPage$
   .map((id = "") => state => {
     const page = getPage(id);
-    if (page === PAGES.CHARACTERS) {
+    if (id === PAGES.CHARACTERS.id) {
       characters.actions.handleSetPage$.next();
     }
     return {
