@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import Entry from "./Entry";
-import types from "../../../shared/characters/change-type";
 import { TextField } from "../../components/TextField";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import * as actions from "../actions";
@@ -16,15 +15,15 @@ export default class CharacterProfile extends PureComponent {
   }
 
   componentDidMount() {
-    actions.loadProfile(this.props.id, this.setProfile);
+    this.loadProfile(this.props.id);
   }
 
   componentWillReceiveProps(nextProps) {
-    actions.loadProfile(nextProps.id, this.setProfile);
+    this.loadProfile(nextProps.id);
   }
 
   setProfile(groups) {
-    this.setState((prevState, props) => ({ groups }));
+    this.setState({ groups });
   }
 
   getGroupIndexById(id) {
@@ -36,23 +35,25 @@ export default class CharacterProfile extends PureComponent {
       .findIndex((entry) => entry.id === id);
   }
 
+  loadProfile(id) {
+    actions.loadProfile(id)
+      .then((groups) => this.setProfile(groups))
+      .catch((e) => console.log("Could not load Profile", e));
+  }
+
   saveEntry(id, value, characterId, groupId) {
-    const params = {
-      characterId,
-      type:    types.ENTRY,
-      typeId:  id,
-      changes: { value },
-    };
     const groupIndex = this.getGroupIndexById(groupId);
     const entryIndex = this.getEntryIndexById(groupIndex, id);
-    actions.updateCharacter(params,
-      () => {
+    actions.updateProfileEntry(characterId, id, value)
+      .then((res) => {
         const groups = [...this.state.groups];
         groups[groupIndex].entries[entryIndex].value = value;
         this.setState({ groups });
-      },
-      (error) => {
-        console.log("Entry could not be saved", error);
+        console.log("Entry saved successfully", res);
+      })
+      .catch((e) => {
+        console.log("Entry could not be saved", e);
+        // TODO: rollback changes
       });
   }
 

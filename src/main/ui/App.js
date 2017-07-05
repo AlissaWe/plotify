@@ -1,15 +1,13 @@
 import React, { Component } from "react";
-import { OPEN_STORY, OPEN_STORY_DIALOG } from "../shared/stories/ipc-channels";
-import { sendToModel } from "../shared/commons/ipc";
 import AppBar from "./components/AppBar";
 import Drawer from "./components/Drawer";
 import CharacterSection from "./characters/components/CharacterSection";
+import * as actions from "./story/actions";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.openStoryDialog = this.openStoryDialog.bind(this);
-    this.openStoryIfFileSelected = this.openStoryIfFileSelected.bind(this);
     this.state = {
       story: "",
       error: "",
@@ -17,23 +15,9 @@ export default class App extends Component {
   }
 
   openStoryDialog() {
-    // todo: move to actions
-    sendToModel(OPEN_STORY_DIALOG)
-      .then((file) => this.openStoryIfFileSelected(file))
+    actions.openStoryDialog()
       .then((story) => this.setState({ story }))
-      //.then(() => sendToModel(FIND_CHARACTERS, { deleted: false, filter: "" }))
-      //.then((characters) => this.setState({ characters }))
-      .catch((error) => this.setState({ error }));
-  }
-
-  openStoryIfFileSelected(file) {
-    // todo: move to actions
-    if (file) {
-      return sendToModel(OPEN_STORY, file);
-    }
-    const error = "No Story Chosen";
-    console.log(error);
-    return Promise.reject(error);
+      .catch((e) => console.log(e));
   }
 
   render() {
@@ -51,7 +35,7 @@ export default class App extends Component {
           </button>
           {
             this.state.story &&
-            <CharacterSection />
+            <CharacterSection story={ this.state.story } />
           }
         </main>
       </div>

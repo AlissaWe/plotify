@@ -88,4 +88,10 @@ TextField.propTypes = {
 
 TextField.defaultProps = {
   fullWidth: false,
+  onChange:  (value) => {
+    console.log("Unset Property `onChange()`", value);
+  },
+  onBlur:    (value) => {
+    console.log("Unset Property `onBlur()`", value);
+  },
 };

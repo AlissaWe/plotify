@@ -1,9 +1,6 @@
 import React, { PureComponent } from "react";
 import CharacterProfile from "./CharacterProfile";
 import FilterableCharacterList from "./CharacterList";
-import { sendToModel } from "../../../shared/commons/ipc";
-import { FIND_CHARACTERS } from "../../../shared/characters/ipc-channels";
-import types from "../../../shared/characters/change-type";
 import * as actions from "../actions";
 
 export default class CharacterSection extends PureComponent {
@@ -20,7 +17,17 @@ export default class CharacterSection extends PureComponent {
   }
 
   componentWillMount() {
-    sendToModel(FIND_CHARACTERS, { deleted: false, filter: "" })
+    this.findCharacters();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.story !== nextProps.story) {
+      this.findCharacters();
+    }
+  }
+
+  findCharacters() {
+    actions.findCharacters()
       .then((characters) => this.setState({ characters }))
       .catch((error) => this.setState({ error }));
   }
@@ -53,13 +60,13 @@ export default class CharacterSection extends PureComponent {
 
   saveName(name) {
     if (name !== this.characterName) {
-      const params = {
-        characterId: this.state.selectedCharacterId,
-        type:        types.CHARACTER,
-        typeId:      this.state.selectedCharacterId,
-        changes:     { name },
-      };
-      actions.updateCharacter(params, this.handleNameChanged(name));
+      //actions.updateCharacter(params, this.handleNameChanged(name));
+      actions.updateCharacterName(this.state.selectedCharacterId, name)
+        .then(() => this.handleNameChanged(name))
+        .catch((e) => {
+          console.log(e);
+          // rollback changes...
+        });
     }
   }
 
