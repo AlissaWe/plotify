@@ -1,0 +1,3 @@
+# Ignores js files in resource folder
+/src/main/ui/resources/*.js
+/src/main/ui/resources/*.css

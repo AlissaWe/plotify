@@ -1,17 +1,29 @@
-import page from "../page";
-import charactersList from "./list";
+import { sendToModel } from "../../shared/commons/ipc";
+import { GET_CHARACTER_PROFILE, UPDATE_CHARACTER } from "../../shared/characters/ipc-channels";
+import { sendCallback } from "../utils/actions";
 
-export function handleSetPage() {
-  return (dispatch, getState) => {
+// todo: make promises instead of callbacks ?
 
-    const pageId = page.constants.PAGES.CHARACTERS.id;
-    const currentPageId = page.selectors.getCurrentPageId(getState());
-
-    if (pageId === currentPageId) {
-      return dispatch(charactersList.actions.findCharacters());
-    } else {
-      return Promise.resolve();
-    }
-
-  };
+export function updateCharacter(params, successCallback, errorCallback) {
+  sendToModel(UPDATE_CHARACTER, params)
+    .then(() => {
+      console.log("Character saved successfully", params);
+      sendCallback(successCallback);
+    })
+    .catch((error) => {
+      console.log("Error saving Character", params, error);
+      sendCallback(() => errorCallback(error));
+    });
 }
+
+export function loadProfile(id, successCallback, errorCallback) {
+  sendToModel(GET_CHARACTER_PROFILE, id)
+    .then((groups) => {
+      sendCallback(() => successCallback(groups));
+    })
+    .catch((error) => {
+      console.log("ERR", error);
+      sendCallback(() => errorCallback(error));
+    });
+}
+
