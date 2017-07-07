@@ -1,6 +1,24 @@
-import React, { PureComponent, PropTypes} from "react";
+import React, { PropTypes, PureComponent } from "react";
+import * as componentHandler from "../resources/material";
 
 export default class AppBar extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.toggleActionMenu = this.toggleActionMenu.bind(this);
+    this.state = {
+      menuOpen: false,
+    };
+  }
+
+  componentDidMount() {
+    componentHandler.upgradeDom();
+  }
+
+  toggleActionMenu() {
+    this.setState((prevState) => ({ menuOpen: !prevState.menuOpen }));
+    console.log("toggleActionMenu() open?", this.state.menuOpen);
+  }
+
   render() {
     return (
       <header className="mdl-layout__header">
@@ -10,7 +28,7 @@ export default class AppBar extends PureComponent {
           </span>
           <div className="mdl-layout-spacer" />
           <nav className="mdl-navigation">
-            <a className="mdl-navigation__link" href="">Link...</a>
+            { this.props.actionMenu }
           </nav>
         </div>
       </header>
@@ -19,5 +37,6 @@ export default class AppBar extends PureComponent {
 }
 
 AppBar.proptypes = {
-  title: PropTypes.string.isRequired,
+  title:      PropTypes.string.isRequired,
+  actionMenu: PropTypes.element,
 };

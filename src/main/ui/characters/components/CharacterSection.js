@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import CharacterProfile from "./CharacterProfile";
 import FilterableCharacterList from "./CharacterList";
 import * as actions from "../actions";
@@ -95,3 +96,7 @@ export default class CharacterSection extends PureComponent {
     );
   }
 }
+
+CharacterSection.propTypes = {
+  story: PropTypes.string.isRequired,
+};

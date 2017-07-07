@@ -3,6 +3,7 @@ import AppBar from "./components/AppBar";
 import Drawer from "./components/Drawer";
 import CharacterSection from "./characters/components/CharacterSection";
 import * as actions from "./story/actions";
+import ActionMenu from "./story/components/ActionMenu";
 
 export default class App extends Component {
   constructor(props) {
@@ -21,18 +22,27 @@ export default class App extends Component {
   }
 
   render() {
-    // todo: fix drawer...
     return (
       <div className="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-        <AppBar title="Plotify" />
+        <AppBar
+          title="Plotify"
+          actionMenu={
+            <div>
+              <button
+                id="demo-menu-lower-right"
+                className="mdl-button mdl-js-button mdl-button--icon"
+              >
+                <i className="material-icons">more_vert</i>
+              </button>
+              <ActionMenu
+                openStoryDialog={ this.openStoryDialog }
+                storyOpen={ this.state.story !== "" }
+              />
+            </div>
+          }
+        />
         <Drawer />
         <main className="mdl-layout__content">
-          <button
-            className="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent"
-            onClick={ this.openStoryDialog }
-          >
-            Open Story
-          </button>
           {
             this.state.story &&
             <CharacterSection story={ this.state.story } />
