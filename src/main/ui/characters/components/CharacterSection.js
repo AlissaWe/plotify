@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import CharacterProfile from "./CharacterProfile";
-import FilterableCharacterList from "./CharacterList";
+import FilterableCharacterList from "./FilterableCharacterList";
 import * as actions from "../actions";
 
 export default class CharacterSection extends PureComponent {
@@ -9,6 +9,7 @@ export default class CharacterSection extends PureComponent {
     super(props);
     this.handleSelectCharacter = this.handleSelectCharacter.bind(this);
     this.handleNameChanged = this.handleNameChanged.bind(this);
+    this.handleFilterChanged = this.handleFilterChanged.bind(this);
     this.saveName = this.saveName.bind(this);
     this.state = {
       characters:          [],
@@ -27,10 +28,14 @@ export default class CharacterSection extends PureComponent {
     }
   }
 
-  findCharacters() {
-    actions.findCharacters()
+  findCharacters(filter) {
+    actions.findCharacters(filter)
       .then((characters) => this.setState({ characters }))
       .catch((error) => this.setState({ error }));
+  }
+
+  handleFilterChanged(filter) {
+    this.findCharacters(filter);
   }
 
   handleSelectCharacter(id) {
@@ -59,6 +64,10 @@ export default class CharacterSection extends PureComponent {
     return this.state.selectedCharacterId !== "";
   }
 
+  get isCharacterVisible() {
+    return this.isCharacterSelected && typeof this.characterName !== "undefined";
+  }
+
   saveName(name) {
     if (name !== this.characterName) {
       //actions.updateCharacter(params, this.handleNameChanged(name));
@@ -76,13 +85,14 @@ export default class CharacterSection extends PureComponent {
       <div>
         <div style={{ width: 300, float: "left" }}>
           <FilterableCharacterList
+            onFilterChanged={ this.handleFilterChanged }
             items={ this.state.characters }
             selectItem={ this.handleSelectCharacter }
           />
         </div>
         <div style={{ width: "calc(100% - 320px)", float: "left" }}>
           {
-            this.isCharacterSelected ?
+            this.isCharacterSelected && this.isCharacterVisible ?
               <CharacterProfile
                 id={ this.state.selectedCharacterId }
                 name={ this.characterName }

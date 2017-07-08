@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import CharacterListItem from "./CharacterListItem";
 import componentHandler from "../../resources/material";
-import Search from "./Search";
 import { List } from "../../components/List";
 
 export default class CharacterList extends Component {
@@ -27,7 +26,6 @@ export default class CharacterList extends Component {
   render() {
     return (
       <div>
-        <Search id="filterCharacterList" />
         <List>
           {
             this.props.items.map(({ id, name, deleted }) => (

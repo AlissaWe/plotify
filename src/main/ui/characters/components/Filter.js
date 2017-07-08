@@ -1,10 +1,20 @@
-import React, { PureComponent, PropTypes } from "react";
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 
 const styles = {
   width: "100%",
 };
 
-export default class Search extends PureComponent {
+export default class Filter extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    this.props.onChange(event.target.value);
+  }
+
   render() {
     const id = this.props.id;
     const fieldId = `search-input-${id}`;
@@ -16,7 +26,11 @@ export default class Search extends PureComponent {
             <i className="material-icons">search</i>
           </label>
           <div className="mdl-textfield__expandable-holder">
-            <input className="mdl-textfield__input" type="text" id={ fieldId } />
+            <input
+              className="mdl-textfield__input"
+              type="text" id={ fieldId }
+              onChange={ this.handleChange }
+            />
             <label className="mdl-textfield__label" htmlFor={ labelId }>Expandable Input</label>
           </div>
         </div>
@@ -25,6 +39,7 @@ export default class Search extends PureComponent {
   }
 }
 
-Search.propTypes = {
-  id: PropTypes.string.isRequired,
+Filter.propTypes = {
+  id:       PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
