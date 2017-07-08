@@ -29,12 +29,13 @@ export default class App extends Component {
           actionMenu={
             <div>
               <button
-                id="demo-menu-lower-right"
+                id="open-action-menu"
                 className="mdl-button mdl-js-button mdl-button--icon"
               >
                 <i className="material-icons">more_vert</i>
               </button>
               <ActionMenu
+                anchorEl="open-action-menu"
                 openStoryDialog={ this.openStoryDialog }
                 storyOpen={ this.state.story !== "" }
               />

@@ -59,7 +59,7 @@ export default class CharacterProfile extends PureComponent {
 
   render() {
     return (
-      <div>
+      <div className="plotify-character-profile">
         <ReactCSSTransitionGroup
           transitionName="profile"
           transitionAppear

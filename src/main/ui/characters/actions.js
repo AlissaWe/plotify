@@ -2,6 +2,11 @@ import { sendToModel } from "../../shared/commons/ipc";
 import { FIND_CHARACTERS, GET_CHARACTER_PROFILE, UPDATE_CHARACTER } from "../../shared/characters/ipc-channels";
 import types from "../../shared/characters/change-type";
 
+/*
+ TODO: possible include the component's state / partial state in action functions.
+ this would move a lot of state transformation from the components to actions.
+ */
+
 export function loadProfile(id) {
   return sendToModel(GET_CHARACTER_PROFILE, id);
 }

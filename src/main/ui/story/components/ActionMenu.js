@@ -1,11 +1,16 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { Menu, MenuItem, Divider } from "../../components/Menu";
+import * as componentHandler from "../../resources/material";
 
 export default class ActionMenu extends PureComponent {
+  componentDidMount() {
+    componentHandler.upgradeDom();
+  }
+
   render() {
     return (
-      <Menu refId="demo-menu-lower-right">
+      <Menu refId={ this.props.anchorEl }>
         <MenuItem caption="Neue Geschichte" icon="add_circle" />
         <MenuItem
           caption="Geschichte Öffnen"
@@ -29,5 +34,6 @@ export default class ActionMenu extends PureComponent {
 
 ActionMenu.propTypes = {
   openStoryDialog: PropTypes.func.isRequired,
-  storyOpen: PropTypes.bool.isRequired,
+  storyOpen:       PropTypes.bool.isRequired,
+  anchorEl:        PropTypes.string.isRequired,
 };
