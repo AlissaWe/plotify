@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import CharacterProfile from "./CharacterProfile";
 import FilterableCharacterList from "./FilterableCharacterList";
 import * as actions from "../actions";
+import FloatingActionButton from "../../components/Buttons/FloatingActionButton";
 
 export default class CharacterSection extends PureComponent {
   constructor(props) {
@@ -42,10 +43,10 @@ export default class CharacterSection extends PureComponent {
     this.setState({ selectedCharacterId: id });
   }
 
-  handleNameChanged(name) {
+  handleNameChanged(id, name) {
     const characters = [...this.state.characters];
     const index = characters
-      .findIndex((c) => c.id === this.state.selectedCharacterId);
+      .findIndex((c) => c.id === id);
     characters[index].name = name;
     this.setState({ characters });
   }
@@ -72,7 +73,7 @@ export default class CharacterSection extends PureComponent {
     if (name !== this.characterName) {
       //actions.updateCharacter(params, this.handleNameChanged(name));
       actions.updateCharacterName(this.state.selectedCharacterId, name)
-        .then(() => this.handleNameChanged(name))
+        .then((id) => this.handleNameChanged(id, name))
         .catch((e) => {
           console.log(e);
           // rollback changes...
@@ -87,7 +88,18 @@ export default class CharacterSection extends PureComponent {
           <FilterableCharacterList
             onFilterChanged={ this.handleFilterChanged }
             items={ this.state.characters }
-            selectItem={ this.handleSelectCharacter }
+            onSelectItem={ this.handleSelectCharacter }
+          />
+
+          <FloatingActionButton
+            action={
+              () => actions.createCharacter()
+                .then((id) => {
+                  console.log("character created", id);
+                  this.findCharacters();
+                })
+            }
+            icon="add"
           />
         </div>
         <div style={{ width: "calc(100% - 320px)", float: "left" }}>

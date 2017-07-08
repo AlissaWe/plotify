@@ -1,5 +1,8 @@
 import { sendToModel } from "../../shared/commons/ipc";
-import { FIND_CHARACTERS, GET_CHARACTER_PROFILE, UPDATE_CHARACTER } from "../../shared/characters/ipc-channels";
+import {
+  CREATE_CHARACTER, FIND_CHARACTERS, GET_CHARACTER_PROFILE,
+  UPDATE_CHARACTER,
+} from "../../shared/characters/ipc-channels";
 import types from "../../shared/characters/change-type";
 
 /*
@@ -41,4 +44,8 @@ export function findCharacters(filter) {
     filter,
   };
   return sendToModel(FIND_CHARACTERS, params);
+}
+
+export function createCharacter() {
+  return sendToModel(CREATE_CHARACTER);
 }

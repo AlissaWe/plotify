@@ -1,6 +1,7 @@
 @import "css/filter.css";
 @import "css/menu.css";
 @import "css/profile.css";
+@import "css/character-list.css";
 
 * {
     margin: 0;

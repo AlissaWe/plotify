@@ -20,12 +20,12 @@ export default class CharacterList extends Component {
     this.setState({
       selected: id,
     });
-    this.props.selectItem(id);
+    this.props.onSelectItem(id);
   }
 
   render() {
     return (
-      <div>
+      <div className="plotify-character-list">
         <List>
           {
             this.props.items.map(({ id, name, deleted }) => (
@@ -45,8 +45,8 @@ export default class CharacterList extends Component {
 }
 
 CharacterList.propTypes = {
-  items:      PropTypes.array.isRequired,
-  selectItem: PropTypes.func.isRequired,
+  items:        PropTypes.array.isRequired,
+  onSelectItem: PropTypes.func.isRequired,
 };
 
 CharacterList.defaultProps = {

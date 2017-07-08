@@ -13,7 +13,7 @@ export default class FilterableCharacterList extends PureComponent {
         />
         <CharacterList
           items={ this.props.items }
-          selectItem={ this.props.selectItem }
+          onSelectItem={ this.props.onSelectItem }
         />
       </div>
     );
@@ -22,7 +22,7 @@ export default class FilterableCharacterList extends PureComponent {
 
 FilterableCharacterList.propTypes = {
   items:           PropTypes.array.isRequired,
-  selectItem:      PropTypes.func.isRequired,
+  onSelectItem:    PropTypes.func.isRequired,
   onFilterChanged: PropTypes.func.isRequired,
 };
 
