@@ -19,6 +19,7 @@ export default class CharacterSection extends PureComponent {
     };
   }
 
+  /*------------- LIFECYCLE HOOKS -------------*/
   componentWillMount() {
     this.findCharacters();
   }
@@ -29,6 +30,7 @@ export default class CharacterSection extends PureComponent {
     }
   }
 
+  /*------------- BOUND ACTIONS -------------*/
   findCharacters(filter) {
     actions.findCharacters(filter)
       .then((characters) => this.setState({ characters }))
@@ -51,10 +53,23 @@ export default class CharacterSection extends PureComponent {
     this.setState({ characters });
   }
 
+  saveName(name) {
+    if (name !== this.characterName) {
+      //actions.updateCharacter(params, this.handleNameChanged(name));
+      actions.updateCharacterName(this.selectedCharacterId, name)
+        .then((id) => this.handleNameChanged(id, name))
+        .catch((e) => {
+          console.log(e);
+          // TODO rollback changes...
+        });
+    }
+  }
+
+  /*------------- GETTERS -------------*/
   get characterName() {
     let result = undefined;
     const character = this.state.characters
-      .find((c) => c.id === this.state.selectedCharacterId);
+      .find((c) => c.id === this.selectedCharacterId);
     if (character) {
       result = character.name;
     }
@@ -62,23 +77,15 @@ export default class CharacterSection extends PureComponent {
   }
 
   get isCharacterSelected() {
-    return this.state.selectedCharacterId !== "";
+    return this.selectedCharacterId !== "";
+  }
+
+  get selectedCharacterId() {
+    return this.state.selectedCharacterId;
   }
 
   get isCharacterVisible() {
     return this.isCharacterSelected && typeof this.characterName !== "undefined";
-  }
-
-  saveName(name) {
-    if (name !== this.characterName) {
-      //actions.updateCharacter(params, this.handleNameChanged(name));
-      actions.updateCharacterName(this.state.selectedCharacterId, name)
-        .then((id) => this.handleNameChanged(id, name))
-        .catch((e) => {
-          console.log(e);
-          // rollback changes...
-        });
-    }
   }
 
   render() {
@@ -106,7 +113,7 @@ export default class CharacterSection extends PureComponent {
           {
             this.isCharacterSelected && this.isCharacterVisible ?
               <CharacterProfile
-                id={ this.state.selectedCharacterId }
+                id={ this.selectedCharacterId }
                 name={ this.characterName }
                 saveName={ this.saveName }
               />

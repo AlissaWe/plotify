@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from "react";
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { ListItem } from "../../components/List";
 const NO_NAME = "Kein Name";
 
-export default class CharacterListItem extends Component {
+export default class CharacterListItem extends PureComponent {
   render() {
     return (
       <ListItem

@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from "react";
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import componentHandler from "../../resources/material";
 
-export default class List extends Component {
+export default class List extends PureComponent {
   constructor(props) {
     super(props);
     this.selectItem = this.selectItem.bind(this);

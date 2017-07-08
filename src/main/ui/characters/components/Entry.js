@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from "react";
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import { TextField } from "../../components/TextField";
 
-export default class Entry extends Component {
+export default class Entry extends PureComponent {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);

@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes } from "react";
+import React, { PureComponent } from "react";
 
 export default class Drawer extends PureComponent {
   render() {

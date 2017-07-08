@@ -1,4 +1,5 @@
-import React, { PropTypes, PureComponent } from "react";
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import * as componentHandler from "../resources/material";
 
 export default class AppBar extends PureComponent {

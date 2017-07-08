@@ -1,9 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 import CharacterListItem from "./CharacterListItem";
 import componentHandler from "../../resources/material";
 import { List } from "../../components/List";
 
-export default class CharacterList extends Component {
+export default class CharacterList extends PureComponent {
   constructor(props) {
     super(props);
     this.selectItem = this.selectItem.bind(this);
