@@ -4,6 +4,7 @@ import CharacterProfile from "./CharacterProfile";
 import FilterableCharacterList from "./FilterableCharacterList";
 import * as actions from "../actions";
 import FloatingActionButton from "../../components/Buttons/FloatingActionButton";
+import { Card } from "../../components/Card";
 
 export default class CharacterSection extends PureComponent {
   constructor(props) {
@@ -90,26 +91,28 @@ export default class CharacterSection extends PureComponent {
 
   render() {
     return (
-      <div>
-        <div style={{ width: 300, float: "left" }}>
+      <div className="plotify-character-section">
+        <Card className="list-flex">
           <FilterableCharacterList
             onFilterChanged={ this.handleFilterChanged }
             items={ this.state.characters }
             onSelectItem={ this.handleSelectCharacter }
           />
 
-          <FloatingActionButton
-            action={
-              () => actions.createCharacter()
-                .then((id) => {
-                  console.log("character created", id);
-                  this.findCharacters();
-                })
-            }
-            icon="add"
-          />
-        </div>
-        <div style={{ width: "calc(100% - 320px)", float: "left" }}>
+          <div className="btn-container">
+            <FloatingActionButton
+              action={
+                () => actions.createCharacter()
+                  .then((id) => {
+                    console.log("character created", id);
+                    this.findCharacters();
+                  })
+              }
+              icon="add"
+            />
+          </div>
+        </Card>
+        <div className="profile-flex">
           {
             this.isCharacterSelected && this.isCharacterVisible ?
               <CharacterProfile

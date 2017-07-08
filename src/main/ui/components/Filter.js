@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 
+// TODO split into two components: expandable-input and custom plotify filter
 export default class Filter extends PureComponent {
   constructor(props) {
     super(props);

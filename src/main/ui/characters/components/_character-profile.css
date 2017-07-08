@@ -1,7 +1,23 @@
+.plotify-character-profile {
+    height: calc(100vh - 56px);
+    display: flex;
+    flex-direction: column;
+}
+
 .plotify-character-profile .mdl-textfield__input {
     color: black;
 }
 
+.plotify-character-profile--name-panel {
+    flex: 1 0 120px;
+    border-radius: 0;
+    z-index: 2;
+    min-height: 0;
+    width: 100%;
+    padding-top: 20px;
+}
+
+/* profile animation */
 .profile-enter {
     opacity: 0.01;
 }

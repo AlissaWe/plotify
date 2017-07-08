@@ -6,7 +6,7 @@ import Filter from "../../components/Filter";
 export default class FilterableCharacterList extends PureComponent {
   render() {
     return (
-      <div className="plotify-character-list">
+      <div className="plotify-character-list--filterable">
         <Filter
           id="filterCharacterList"
           onChange={ this.props.onFilterChanged }

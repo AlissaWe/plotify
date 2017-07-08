@@ -1,7 +1,11 @@
-@import "css/filter.css";
-@import "css/menu.css";
-@import "css/profile.css";
-@import "css/character-list.css";
+@import "../components/mdl-react.css";
+
+@import "../story/components/_menu.css";
+@import "../characters/components/_filter.css";
+@import "../characters/components/_character-profile.css";
+@import "../characters/components/_character-section.css";
+@import "../characters/components/_character-group.css";
+@import "../characters/components/_character-list.css";
 
 * {
     margin: 0;
@@ -38,3 +42,7 @@ div:hover::-webkit-scrollbar-thumb {
     background-color: #2D0444;
 }
 
+.mdl-layout__content {
+    height: 100vh;
+    overflow: hidden;
+}
